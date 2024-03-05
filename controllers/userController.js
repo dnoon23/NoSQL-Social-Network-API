@@ -30,7 +30,7 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
-  // create a new user
+  // Create a new user
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -45,7 +45,7 @@ module.exports = {
       const user = await User.findOneAndRemove({ _id: req.params.userId });
 
       if (!user) {
-        return res.status(404).json({ message: 'No such user exists' });
+        return res.status(404).json({ message: 'No user with that ID' });
       }
 
       const thought = await Thought.findOneAndUpdate(
@@ -66,8 +66,24 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Update user by id
+  async updateUser(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
 
-  // Add an friend to a user
+      if (!user) {
+        return res.status(404).json({ message: 'No user with that ID' });
+      }
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Add a friend to a user
   async addFriend(req, res) {
     console.log('You are adding a friend');
     console.log(req.body);
@@ -82,7 +98,7 @@ module.exports = {
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'No user found with that ID :(' });
+          .json({ message: 'No user with that ID' });
       }
 
       res.json(user);
@@ -102,7 +118,7 @@ module.exports = {
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'No user found with that ID :(' });
+          .json({ message: 'No user with that ID' });
       }
 
       res.json(user);
