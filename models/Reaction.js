@@ -8,7 +8,7 @@ const reactionSchema = new Schema(
       default: () => new Types.ObjectId()
     },
     reactionBody: {
-      type: string,
+      type:String,
       required: true,
       maxlength: 280
     },
