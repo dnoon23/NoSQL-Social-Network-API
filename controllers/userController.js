@@ -53,7 +53,7 @@ module.exports = {
 
       if (!thought) {
         return res.status(404).json({
-          message: 'User deleted, but no thoughts found',
+          message: 'User deleted',
         });
       }
 
@@ -82,9 +82,6 @@ module.exports = {
   },
   // Add a friend to a user
   async addFriend(req, res) {
-    console.log('You are adding a friend');
-    console.log(req.body);
-
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
@@ -108,8 +105,8 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.friendId } } },
-        { runValidators: true, new: true }
+        { $pull: { friends: req.body.friendId || req.params.friendId } },
+        { new: true }
       );
 
       if (!user) {

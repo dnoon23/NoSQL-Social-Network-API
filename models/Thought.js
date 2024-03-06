@@ -3,23 +3,27 @@ const Reaction = require('./Reaction')
 
 const thoughtSchema = new Schema(
   {
-    thoughtText:{
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlenght: 280
+    thoughtText: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlenght: 280
     },
-    createdAt:{
-        type: Date,
-        default: Date.now,
-        get: timestamp => new Date(timestamp).toLocaleString()
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: timestamp => new Date(timestamp).toLocaleString()
     },
-    username:{
-        type: String,  
-        required: true
+    username: {
+      type: String,
+      required: true
     },
-    reactions:[Reaction]
-},
+    userId: {
+      type: String,
+      required: true
+    },
+    reactions: [Reaction]
+  },
   {
     toJSON: {
       virtuals: true,
@@ -29,7 +33,7 @@ const thoughtSchema = new Schema(
   }
 );
 
-thoughtSchema.virtual('reactionCount').get(function(){
+thoughtSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;
 });
 
